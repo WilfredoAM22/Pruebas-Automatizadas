@@ -1,9 +1,36 @@
 import bcrypt
 import jwt
+import re
 from datetime import datetime, timedelta, UTC
 
 
 SECRET_KEY = "MiClaveSecretaParaJWT2026_MiRed_Segura"
+
+
+def validate_email(email):
+    """
+    Valida que el email tenga un formato básico correcto.
+    """
+    pattern = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+
+    return re.match(pattern, email) is not None
+
+
+def validate_password(password):
+    """
+    Valida que la contraseña tenga al menos 8 caracteres,
+    una letra y un número.
+    """
+    if len(password) < 8:
+        return False
+
+    if not re.search(r"[A-Za-z]", password):
+        return False
+
+    if not re.search(r"\d", password):
+        return False
+
+    return True
 
 
 def hash_password(password):

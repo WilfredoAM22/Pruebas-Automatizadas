@@ -1,9 +1,31 @@
 from Backend.auth import (
+    validate_email,
+    validate_password,
     hash_password,
     verify_password,
     generate_token,
     verify_token
 )
+
+
+def test_validate_email_correcto():
+    assert validate_email("usuario@gmail.com") is True
+
+
+def test_validate_email_incorrecto():
+    assert validate_email("usuario@") is False
+
+
+def test_validate_password_correcta():
+    assert validate_password("MiClave123") is True
+
+
+def test_validate_password_muy_corta():
+    assert validate_password("Clave1") is False
+
+
+def test_validate_password_sin_numero():
+    assert validate_password("MiClaveSegura") is False
 
 
 def test_hash_password():
