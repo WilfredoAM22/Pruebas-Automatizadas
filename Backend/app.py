@@ -36,7 +36,6 @@ def register():
     conexion = conectar()
     cursor = conexion.cursor()
 
-
     cursor.execute(
         "SELECT * FROM usuarios WHERE email = ?",
         (email,)
@@ -57,7 +56,10 @@ def register():
 
 
     cursor.execute(
-        "INSERT INTO usuarios (email, password) VALUES (?, ?)",
+        """
+        INSERT INTO usuarios(email, password)
+        VALUES (?, ?)
+        """,
         (email, password_hash)
     )
 
@@ -87,6 +89,7 @@ def login():
         }), 400
 
 
+
     conexion = conectar()
     cursor = conexion.cursor()
 
@@ -108,10 +111,13 @@ def login():
         }), 401
 
 
+
     if not verify_password(password, usuario["password"]):
+
         return jsonify({
             "error": "Credenciales incorrectas"
         }), 401
+
 
 
     token = generate_token(email)
@@ -126,3 +132,24 @@ def login():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
