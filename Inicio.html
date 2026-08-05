@@ -9,9 +9,15 @@
 <body>
 <div class ="contenedor">
     <h1>Iniciar Sesion </h1>
-    <form>
-<div class="input-box">
-        <input type="text" placeholder="Usuario" name="usuario" required>
+<form id="loginForm">
+    <!--APARTADO DE USUARIOS-->
+    <div class="input-box">
+<input
+    type="text"
+    id="email"
+    name="usuario"
+    placeholder="Usuario o correo"
+    required>
         <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
 fill="currentColor" viewBox="0 0 24 24" >
 <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
@@ -19,8 +25,13 @@ fill="currentColor" viewBox="0 0 24 24" >
 </svg>
 </div>
 <div class="input-box">
-
-<input type="password" placeholder="Contraseña" name="contraseña" required>
+    <!--APARTADO DE CONTRASEÑAS-->
+<input
+    type="password"
+    id="password"
+    name="contraseña"
+    placeholder="Contraseña"
+    required>
 <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
 fill="currentColor" viewBox="0 0 24 24" >
 <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
@@ -32,6 +43,7 @@ fill="currentColor" viewBox="0 0 24 24" >
 <div Class="Remember">
     <label><input type="checkbox" id="recordar" name="recordar"> Recordarme</label>
 
+    <p id="mensaje"></p>
 
     <button class="btn" type="submit">Iniciar Sesion</button>
 </form>
