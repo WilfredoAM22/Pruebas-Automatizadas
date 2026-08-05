@@ -28,21 +28,25 @@ def register():
     datos = request.get_json()
 
     email = datos.get("email")
+    usuario = datos.get("usuario")
     password = datos.get("password")
 
-    if not email or not password:
+
+    if not email or not usuario or not password:
         return jsonify({
-            "error": "Email y contraseña son obligatorios"
+            "error": "Email, usuario y contraseña son obligatorios"
         }), 400
 
 
     conexion = conectar()
     cursor = conexion.cursor()
 
+
     cursor.execute(
         "SELECT * FROM usuarios WHERE email = ?",
         (email,)
     )
+
 
     usuario_existente = cursor.fetchone()
 
@@ -60,10 +64,10 @@ def register():
 
     cursor.execute(
         """
-        INSERT INTO usuarios(email, password)
-        VALUES (?, ?)
+        INSERT INTO usuarios(email, usuario, password)
+        VALUES (?, ?, ?)
         """,
-        (email, password_hash)
+        (email, usuario, password_hash)
     )
 
 
@@ -135,24 +139,3 @@ def login():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

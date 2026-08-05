@@ -9,10 +9,13 @@ formulario.addEventListener("submit", async (e) => {
     const password = document.getElementById("password").value;
     const confirmar = document.getElementById("confirmPassword").value;
 
+
     if (password !== confirmar) {
+        mensaje.style.color = "red";
         mensaje.textContent = "Las contraseñas no coinciden.";
         return;
     }
+
 
     try {
 
@@ -23,11 +26,14 @@ formulario.addEventListener("submit", async (e) => {
             },
             body: JSON.stringify({
                 email: email,
+                usuario: usuario,
                 password: password
             })
         });
 
+
         const datos = await respuesta.json();
+
 
         if (respuesta.ok) {
 
@@ -43,10 +49,12 @@ formulario.addEventListener("submit", async (e) => {
 
         }
 
+
     } catch (error) {
 
         mensaje.style.color = "red";
         mensaje.textContent = "No se pudo conectar con el servidor.";
 
     }
+
 });
