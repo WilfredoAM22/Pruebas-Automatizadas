@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from Backend.auth import hash_password, verify_password, generate_token
 import sqlite3
 
 
 app = Flask(__name__)
+
+CORS(app)
 
 DATABASE = "Backend/mired.db"
 

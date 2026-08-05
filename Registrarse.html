@@ -10,13 +10,15 @@
 <body>
 <div class="contenedor">
     <h1>Registrate</h1>
-    <form>
+    <form id="registroForm">
         <!--EMAILS-->
         <h2>Introduce tu Correo</h2>
     <div class="input-box">
-            <input type="text"
+            <input
+            type="email"
+            id="email"
+            name="email"
             placeholder="Email"
-            name="Email"
             required>
             <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
 fill="currentColor" viewBox="2 2 20 20" >
@@ -26,9 +28,11 @@ fill="currentColor" viewBox="2 2 20 20" >
     </div>
 <!--CAMPO DE LOS USUARIOS-->
         <div class="input-box">
-            <input type="text"
+            <input
+            type="text"
+            id="usuario"
+            name="usuario"
             placeholder="Usuario"
-            name="Usuario"
             required>
     <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
 fill="currentColor" viewBox="0 0 24 24" >
@@ -38,9 +42,11 @@ fill="currentColor" viewBox="0 0 24 24" >
         </div>
 <!--password-->
 <div class="input-box">
-            <input type="text"
+            <input
+            type="password"
+            id="password"
+            name="password"
             placeholder="Contraseña"
-            name="Contraseña"
             required>
             <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
 fill="currentColor" viewBox="2 2 20 20" >
@@ -49,9 +55,11 @@ fill="currentColor" viewBox="2 2 20 20" >
 </svg>
 </div>
 <div class="input-box">
-            <input type="text"
-            placeholder="Confirme su Contraseña"
-            name="Contraseña"
+            <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirme su contraseña"
             required>
             <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
 fill="currentColor" viewBox="2 2 20 20" >
@@ -62,12 +70,14 @@ fill="currentColor" viewBox="2 2 20 20" >
         <h5>La contraseña debe tener más de 7 caracteres, con letras y números </h5>
         <button class="btn" type="submit">
    <strong> Crear Cuenta </strong> </button>
+   <p id="mensaje"></p>
         <p>¿Ya tienes una cuenta?
             <a href="Inicio.html">Accede Aqui </a>
             </a>
         </p>
     </form>
 </div>
+<script src="registro.js"></script>
     
 </body>
 </html>
