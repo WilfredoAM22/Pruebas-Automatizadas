@@ -1,4 +1,9 @@
 from Backend.app import app
+import uuid
+
+
+def correo_unico():
+    return f"{uuid.uuid4().hex}@example.com"
 
 
 def test_register():
@@ -7,7 +12,8 @@ def test_register():
     response = client.post(
         "/register",
         json={
-            "email": "test@example.com",
+            "email": correo_unico(),
+            "usuario": "usuario_test",
             "password": "MiClave123"
         }
     )
@@ -18,10 +24,13 @@ def test_register():
 def test_login_correcto():
     client = app.test_client()
 
+    email = correo_unico()
+
     client.post(
         "/register",
         json={
-            "email": "login@example.com",
+            "email": email,
+            "usuario": "login_test",
             "password": "MiClave123"
         }
     )
@@ -29,7 +38,7 @@ def test_login_correcto():
     response = client.post(
         "/login",
         json={
-            "email": "login@example.com",
+            "email": email,
             "password": "MiClave123"
         }
     )
@@ -44,10 +53,13 @@ def test_login_correcto():
 def test_login_password_incorrecta():
     client = app.test_client()
 
+    email = correo_unico()
+
     client.post(
         "/register",
         json={
-            "email": "error@example.com",
+            "email": email,
+            "usuario": "error_test",
             "password": "MiClave123"
         }
     )
@@ -55,7 +67,7 @@ def test_login_password_incorrecta():
     response = client.post(
         "/login",
         json={
-            "email": "error@example.com",
+            "email": email,
             "password": "Incorrecta"
         }
     )
