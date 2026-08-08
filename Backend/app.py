@@ -1,0 +1,156 @@
+import re
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+from Backend.auth import hash_password, verify_password, generate_token
+import sqlite3
+
+
+app = Flask(__name__)
+import os
+
+
+if app.config.get('TESTING'):
+    app.config['DATABASE'] = 'test.db'
+else:
+    app.config['DATABASE'] = 'database.db'  
+CORS(app)
+
+DATABASE = "Backend/mired.db" 
+
+def validar_email(email):
+    patron = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(patron, email) is not None
+
+
+def conectar():
+    conexion = sqlite3.connect(DATABASE)
+    conexion.row_factory = sqlite3.Row
+    return conexion
+
+
+@app.route("/")
+def inicio():
+    return "Backend de MiRed funcionando correctamente"
+
+
+@app.route("/register", methods=["POST"])
+def register():
+    datos = request.get_json()
+
+    email = datos.get("email")
+    usuario = datos.get("usuario")
+    password = datos.get("password")
+
+   
+    if not email or not usuario or not password:
+        return jsonify({"error": "Faltan campos"}), 400
+    
+    if not validar_email(email):
+        return jsonify({"error": "Email invalido"}), 400
+    
+    if len(password) < 6:
+        return jsonify({"error": "Password muy corta"}), 400
+
+   
+
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE email = ?",
+        (email,)
+    )
+
+
+    usuario_existente = cursor.fetchone()
+
+
+    if usuario_existente:
+        conexion.close()
+
+        return jsonify({
+            "error": "El usuario ya existe"
+        }), 409
+
+
+    password_hash = hash_password(password)
+
+
+    cursor.execute(
+        """
+        INSERT INTO usuarios(email, usuario, password)
+        VALUES (?, ?, ?)
+        """,
+        (email, usuario, password_hash)
+    )
+
+
+    conexion.commit()
+    conexion.close()
+
+
+    return jsonify({
+        "mensaje": "Usuario registrado correctamente"
+    }), 201
+
+
+
+@app.route("/login", methods=["POST"])
+def login():
+
+    datos = request.get_json()
+
+    email = datos.get("email")
+    password = datos.get("password")
+
+
+    if not email or not password:
+        return jsonify({
+            "error": "Email y contraseña son obligatorios"
+        }), 400
+
+
+
+    conexion = conectar()
+    cursor = conexion.cursor()
+
+
+    cursor.execute(
+        "SELECT * FROM usuarios WHERE email = ?",
+        (email,)
+    )
+
+
+    usuario = cursor.fetchone()
+
+    conexion.close()
+
+
+    if not usuario:
+        return jsonify({
+            "error": "Credenciales incorrectas"
+        }), 401
+
+
+
+    if not verify_password(password, usuario["password"]):
+
+        return jsonify({
+            "error": "Credenciales incorrectas"
+        }), 401
+
+
+
+    token = generate_token(email)
+
+
+    return jsonify({
+        "mensaje": "Login exitoso",
+        "token": token
+    }), 200
+
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
